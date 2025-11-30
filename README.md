@@ -56,11 +56,11 @@ Use the command `streamlit run dashboard.py` (Step 4 in **Getting Started**) to 
 
 ## 🎥 Output Screenshots Gallery
 
-Here are example screenshots/visuals from the analysis. **Consider replacing one of the static images below with a short, looping GIF for a more dynamic preview!**
+Here are example screenshots/visuals from the analysis. **Consider replacing one of the static images below with a short, for a more dynamic preview!**
 
-| Processed Video (GIF Recommended) | Object Detection | Speed & Analytics |
+| Processed Video  | Object Detection | Speed & Analytics |
 | :-------------: | :--------------: | :---------------: |
-| <img width="1157" height="686" alt="Screenshot 2025-11-30 at 14 14 17" src="https://github.com/user-attachments/assets/b0ec2dd5-9ba5-4114-a871-52a681e5c057" /> |<img width="1267" height="717" alt="Screenshot 2025-11-30 at 14 15 43" src="https://github.com/user-attachments/assets/3d2f892a-329c-4636-9a3b-cfaf39d90f9d" />|<img width="476" height="947" alt="Screenshot 2025-11-30 at 14 16 50" src="https://github.com/user-attachments/assets/61394790-fd0d-4db1-a14a-33e24d49d29c" />|
+| <img width="1157" height="686" alt="Screenshot 2025-11-30 at 14 14 17" src="https://github.com/user-attachments/assets/b0ec2dd5-9ba5-4114-a871-52a681e5c057" /> |<img width="1455" height="792" alt="Screenshot 2025-11-30 at 17 30 01" src="https://github.com/user-attachments/assets/27bb225e-01ad-418a-b5a9-76f75b9d6872" /> |<img width="1650" height="827" alt="Screenshot 2025-11-30 at 17 29 26" src="https://github.com/user-attachments/assets/14a5f80b-1174-4993-9db5-7387965c98fa" />|
 
 
 ## ✅ Use Cases
@@ -76,4 +76,4 @@ The versatility of the SpeedAI-Analyser allows its application across various in
 
 ## 📄 License
 
-This project is released under the **MIT License**. You are free to use, modify, and distribute the code for both commercial and non-commercial purposes.
+This project is released under the **MIT License**. 
