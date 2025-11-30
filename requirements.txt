@@ -1,9 +1,5 @@
-streamlit
-opencv-python-headless>=4.8
-ultralytics>=8.0.0
-numpy>=1.23
-pandas>=2.0
-lapix>=0.1  
-scipy
-argparse
+streamlit==1.30.0
+opencv-python-headless==4.8.1.78
+ultralytics==8.0.152
+numpy==1.24.4
 
