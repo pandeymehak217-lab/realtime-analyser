@@ -12,10 +12,7 @@
 * **Customizable Detection Models:** Easily integrate different YOLO models for specific tasks.
 * **Lightweight and Efficient:** Designed for high-performance processing on standard hardware.
 
-### 🎬 Live Demonstration
-See the real-time tracking in action!
-> ****
-> *Replace this text with an uploaded GIF, e.g., `<img src="path_to_your_demo.gif" alt="Real-time Tracking GIF" />`*
+
 
 ---
 
