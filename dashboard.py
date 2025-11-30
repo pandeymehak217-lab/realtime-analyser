@@ -5,20 +5,19 @@ import os
 import glob
 from pathlib import Path
 
-# --- Configuration & Setup ---
-# THIS MUST BE THE FIRST STREAMLIT COMMAND
+
 st.set_page_config(
     page_title="Realtime Analyser by Mehak", 
     layout="wide", 
     initial_sidebar_state="collapsed"
 )
 
-# --- CONSTANTS ---
+
 OUTPUT_DIR = Path("output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-# --- Custom Styling (Advanced Dark Theme & Animations) ---
+
 st.markdown("""
 <style>
 /* 1. ADVANCED DARK THEME BACKGROUND */
@@ -124,7 +123,7 @@ h2 {
 """, unsafe_allow_html=True)
 
 
-# --- Function to load the LATEST analysis file ---
+
 def load_latest_analysis_data():
     """Finds the latest JSON analysis file and loads its data."""
     list_of_files = glob.glob(str(OUTPUT_DIR / '*_results.json'))
@@ -146,24 +145,24 @@ def load_latest_analysis_data():
 def display_dashboard_results(data, file_id):
     """Displays the dashboard layout with data, using new CSS classes."""
     
-    # --- Advanced Title ---
+
     st.markdown("<p class='main-header-mehek'>Realtime Analyser by Mehak</p>", unsafe_allow_html=True)
     
-    # --- Analysis ID Text ---
+   
     st.markdown(f"<p class='analysis-id-text'>-- Latest Analysis ID: <span>{file_id}</span> --</p>", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # --- 1. Processed Video Player ---
+   
     st.header("🎥 Processed Video Output")
     
-    # Use a container for the video to give it a clean border/card look
+   
     with st.container(border=True):
         processed_video_path = OUTPUT_DIR / f"{file_id}_processed_video.mp4"
         if processed_video_path.exists():
             st.video(str(processed_video_path))
         else:
-            # Use a placeholder for the missing video for better visual structure
+           
             st.markdown(f"""
                 <div style="background-color: #1F2937; padding: 40px; border-radius: 8px; text-align: center; border: 2px dashed #4B5563;">
                     <h3 style="color: #FFD700;">Video File Not Found</h3>
@@ -175,7 +174,7 @@ def display_dashboard_results(data, file_id):
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # --- 2. Key Metrics (Advanced Cards) ---
+   
     st.header("📊 Key Detection Metrics")
     
     if 'total_objects_per_class' in data and 'all_tracked_objects' in data:
@@ -185,7 +184,7 @@ def display_dashboard_results(data, file_id):
         video_fps = data.get('metadata', {}).get('video_fps', 'N/A')
         time_taken = data.get('metadata', {}).get('analysis_time_seconds', 'N/A')
 
-        # Calculate FPS/Time Metric for a cool 4th card
+       
         if isinstance(frames_processed, int) and isinstance(time_taken, (int, float)) and time_taken > 0:
             processing_fps = round(frames_processed / time_taken, 2)
         else:
@@ -205,9 +204,8 @@ def display_dashboard_results(data, file_id):
 
         st.markdown("---")
 
-    # --- 3. Detailed Data Table ---
     if 'all_tracked_objects' in data:
-        # --- Enhanced Detailed Results Header ---
+       
         st.markdown("<h2 class='detailed-analysis-header'>Detailed Speed Analysis Log</h2>", unsafe_allow_html=True)
         
         df_log = pd.DataFrame(data['all_tracked_objects'])
@@ -215,10 +213,10 @@ def display_dashboard_results(data, file_id):
         display_columns = ['track_id', 'class_name', 'avg_speed_kph', 'max_speed_kph', 'total_frames_tracked']
         
         if not df_log.empty:
-            # Conditional formatting for the dataframe (High speed detection highlighting)
+           
             def highlight_speed(s):
                 if s.name in ['Avg Speed (km/h)', 'Max Speed (km/h)']:
-                    # Example threshold: highlight speeds over 80 kph
+                  
                     return [f'background-color: {"#8B0000" if v > 80 else ""}' for v in s]
                 return [''] * len(s)
 
@@ -231,13 +229,13 @@ def display_dashboard_results(data, file_id):
                 hide_index=True
             )
             
-            # Additional detail for advanced data presentation
+           
             st.caption(f"Showing details for {len(df_display)} unique tracked objects. Max Speed highlighting is applied for speeds over 80 km/h.")
         else:
             st.info("No detailed tracking data available.")
 
 
-# --- Main Application Logic ---
+
 if __name__ == "__main__":
     
     analysis_data, identifier = load_latest_analysis_data()
@@ -246,7 +244,7 @@ if __name__ == "__main__":
         display_dashboard_results(analysis_data, identifier)
         st.info("To see new results, run the analysis script again: `python analysis_core.py --video <path>`")
     else:
-        # Display the main title even if there's an error, for better visual consistency
+        
         st.markdown("<p class='main-header-mehek'>Realtime Analyser by Mehek</p>", unsafe_allow_html=True)
         st.error(f"Analysis Error: {identifier}")
         st.warning("Action needed: Please run the analysis script first to generate data in the 'output' folder.")
