@@ -2,9 +2,7 @@
 import numpy as np
 import collections
 
-# --- Constants for Speed Calculation ---
-# NOTE: YOU MUST CALIBRATE THESE VALUES FOR ACCURATE REAL-WORLD SPEED!
-# PIXELS_PER_METER_FACTOR: How many pixels in the video equal 1 meter in the real world.
+
 PIXELS_PER_METER_FACTOR = 5 
 FPS_DEFAULT = 30 
 
@@ -16,10 +14,10 @@ class ObjectData:
         self.entry_frame = frame_number
         self.exit_frame = frame_number
         self.duration_frames = 0
-        # Stores (x_center, y_center, frame_number)
-        self.path = collections.deque(maxlen=10) # Using deque to store recent history for speed
         
-        # New speed metrics
+        self.path = collections.deque(maxlen=10)
+        
+       
         self.speeds_kph = []
         self.avg_speed_kph = 0.0
         self.max_speed_kph = 0.0
@@ -38,23 +36,21 @@ class Analyser:
         """Calculates instantaneous speed for the object in km/h based on the last two points."""
         path = obj_data.path
         if len(path) < 2:
-            return 0.0 # Not enough history to calculate speed
-
-        # Get the last two positions and frames from the deque
+            return 0.0 
         (x2, y2, t2) = path[-1]
         (x1, y1, t1) = path[-2]
         
-        # 1. Calculate distance moved (Euclidean distance in pixels)
+        
         distance_pixels = np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
         
-        # 2. Calculate time elapsed (frames)
+        
         time_frames = t2 - t1
         
-        if time_frames == 0 or time_frames > 5: # Avoid division by zero, limit max frame gap
+        if time_frames == 0 or time_frames > 5: 
             return 0.0
         
-        # 3. Convert to Kilometers/Hour 
-        # Formula: (distance_pixels / time_frames) * (FPS / PIXELS_PER_METER) * 3.6
+        
+       
         speed_kph = (distance_pixels / time_frames) * (self.fps / self.scale_factor) * 3.6
         
         return speed_kph
@@ -72,7 +68,7 @@ class Analyser:
         for obj in tracked_objects:
             if len(obj) < 6: continue 
                 
-            # Unpack the 6 values: (x1, y1, x2, y2, track_id, class_id)
+            
             x1, y1, x2, y2, track_id, class_id = map(int, obj)
             
             class_name = self.class_names.get(class_id, "Unknown")
@@ -81,29 +77,27 @@ class Analyser:
             current_speed = 0.0
 
             if track_id not in self.tracked_objects_data:
-                # New object detected
+                
                 self.tracked_objects_data[track_id] = ObjectData(track_id, class_name, frame_number)
                 self.total_counts[class_name] = self.total_counts.get(class_name, 0) + 1 
             
-            # Update object data
+         
             obj_data = self.tracked_objects_data[track_id]
             obj_data.exit_frame = frame_number
             
-            # Append new position including frame number
             obj_data.path.append((x_center, y_center, frame_number))
             obj_data.duration_frames += 1
             
-            # Calculate and store speed
+        
             current_speed = self._calculate_speed(obj_data)
             
-            # Store speed data only if the speed is realistic (e.g., above 1 km/h)
+           
             if current_speed > 1:
                  obj_data.speeds_kph.append(current_speed)
                  obj_data.avg_speed_kph = np.mean(obj_data.speeds_kph)
                  obj_data.max_speed_kph = max(obj_data.max_speed_kph, current_speed)
             
-            # Append the full 7-value analysis result for the draw function to use
-            # FIX: Ensure all 7 values are included in the return list
+           
             current_frame_analysis.append((x1, y1, x2, y2, track_id, class_id, current_speed))
             
         return current_frame_analysis 
@@ -114,7 +108,7 @@ class Analyser:
         all_tracked_objects_list = []
         
         for id, data in self.tracked_objects_data.items():
-            # Only report objects tracked for a minimum duration
+           
             if data.duration_frames > 10:
                 all_tracked_objects_list.append({
                     "track_id": id,
